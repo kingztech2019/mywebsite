@@ -1,35 +1,69 @@
-import React from "react";
-import "./App.css";
-import { Layout, Header, Navigation, Drawer, Content } from "react-mdl";
-import Main from "./components/main";
-import { Link } from "react-router-dom";
+import React from 'react';
+import {BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import Container from 'react-bootstrap/Container';
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
+import './App.css';
 
-function App() {
+import Footer from './components/Footer';
+import HomePage from './pages/HomePage';
+
+import AboutPage from './pages/AboutPage';
+import ContactPage from './pages/ContactPage';
+
+class App extends React.Component {
+  
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: 'Garrett Love',
+      headerLinks: [
+        { title: 'Home', path: '/' },
+        { title: 'About', path: '/about' },
+        { title: 'Contact', path: '/contact' }
+      ],
+      home: {
+        title: 'Be Relentless',
+        subTitle: 'Projects the make a difference',
+        text: 'Checkout my projects below'
+      },
+      about: {
+        title: 'About Me'
+      },
+      contact: {
+        title: 'Let\'s Talk'
+      }
+    }
+  }
+
+  render() {
     return (
-        <div className="demo-big-content">
-            <Layout>
-                <Header className="header-color" title={<Link style={{textDecoration: 'none', color: 'white'}} to="/">MyPortfolio</Link>} scroll>
-                    <Navigation>
-                        <Link to="resume">Resume</Link>
-                        <Link to="aboutme">About Me</Link>
-                        <Link to="projects">Projects</Link>
-                        <Link to="contact">Contact</Link>
-                    </Navigation>
-                </Header>
-                <Drawer title={<Link style={{textDecoration: 'none', color: 'black'}} to="/">MyPortfolio</Link>}>
-                    <Navigation>
-                        <Link to="resume">Resume</Link>
-                        <Link to="aboutme">About Me</Link>
-                        <Link to="projects">Projects</Link>
-                        <Link to="contact">Contact</Link>
-                    </Navigation>
-                </Drawer>
-                <Content>
-                    <div className="page-content" />
-                    <Main />
-                </Content>
-            </Layout>
-        </div>
+      <Router>
+        <Container className="p-0" fluid={true}>
+          
+          <Navbar className="border-bottom" bg="transparent" expand="lg">
+            <Navbar.Brand>Garrett Love</Navbar.Brand>
+
+            <Navbar.Toggle className="border-0" aria-controls="navbar-toggle" />
+            <Navbar.Collapse id="navbar-toggle">
+              <Nav className="ml-auto">
+                <Link className="nav-link" to="/">Home</Link>
+                <Link className="nav-link" to="/about">About</Link>
+                <Link className="nav-link" to="/contact">Contact</Link>
+              </Nav>
+            </Navbar.Collapse>
+          </Navbar>
+
+          <Route path="/" exact render={() => <HomePage title={this.state.home.title} subTitle={this.state.home.subTitle} text={this.state.home.text} />} />
+          <Route path="/about" render={() => <AboutPage title={this.state.about.title} />} />
+          <Route path="/contact" render={() => <ContactPage title={this.state.contact.title} />} />
+          
+          <Footer />
+
+        </Container>
+      </Router>
     );
+  }
 }
+
 export default App;
